@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @NoArgsConstructor
 @Data
-@Entity @Table
+@Entity @Table(name = "category")
 public class Category implements Serializable {
 
     @Id

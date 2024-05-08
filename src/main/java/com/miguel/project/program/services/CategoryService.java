@@ -1,8 +1,13 @@
 package com.miguel.project.program.services;
 
 import com.miguel.project.program.entities.Category;
+import com.miguel.project.program.entities.dto.CategoryDTO;
+import com.miguel.project.program.exceptions.EntityNotFoundException;
 import com.miguel.project.program.repositories.CategoryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,8 +20,26 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Category> findAll() {
+    @Transactional(readOnly = true)
+    public Page<CategoryDTO> findAllPaged(PageRequest request) {
 
-        return categoryRepository.findAll();
+        var list = categoryRepository.findAll(request);
+
+        return list.map(CategoryDTO::new);
+    }
+
+    public Category findById(Long id) {
+
+        return categoryRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+    }
+
+    public Category insert(CategoryDTO category) {
+        Category categoryEntity = new Category();
+
+        categoryEntity.setName(category.getName());
+
+        return categoryRepository.save(categoryEntity);
     }
 }
