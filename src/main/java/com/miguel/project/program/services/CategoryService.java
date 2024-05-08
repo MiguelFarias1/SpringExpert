@@ -9,8 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 public class CategoryService {
 
@@ -28,18 +26,18 @@ public class CategoryService {
         return list.map(CategoryDTO::new);
     }
 
-    public Category findById(Long id) {
+    public CategoryDTO findById(Long id) {
 
         return categoryRepository
                 .findById(id)
+                .map(CategoryDTO::new)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
     }
 
-    public Category insert(CategoryDTO category) {
-        Category categoryEntity = new Category();
+    public Category save(CategoryDTO categoryDTO) {
 
-        categoryEntity.setName(category.getName());
+        Category category = new Category(categoryDTO);
 
-        return categoryRepository.save(categoryEntity);
+        return categoryRepository.save(category);
     }
 }

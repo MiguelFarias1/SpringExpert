@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,8 +15,10 @@ import java.io.Serializable;
 public class CategoryDTO implements Serializable {
 
     private String name;
+    private Instant createdAt;
 
     public CategoryDTO(Category category) {
         this.name = category.getName();
+        this.createdAt = category.getCreatedAt();
     }
 }

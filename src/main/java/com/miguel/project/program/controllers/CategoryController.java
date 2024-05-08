@@ -47,7 +47,7 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity<CategoryDTO> createCategory(final @RequestBody CategoryDTO categoryDTO) {
 
-        var category = categoryService.insert(categoryDTO);
+        var category = categoryService.save(categoryDTO);
 
         var uri = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()
@@ -58,5 +58,15 @@ public class CategoryController {
         return ResponseEntity
                 .created(uri)
                 .build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<CategoryDTO> updateCategory(final @PathVariable Long id, final @RequestBody CategoryDTO categoryDTO) {
+        return null;
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCategory(final @PathVariable Long id) {
+        return null;
     }
 }
