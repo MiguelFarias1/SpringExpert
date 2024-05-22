@@ -1,13 +1,14 @@
 package com.miguel.project.program.services;
 
-import com.miguel.project.program.entities.Product;
-import com.miguel.project.program.entities.dto.ProductDTO;
-import com.miguel.project.program.exceptions.EntityNotFoundException;
-import com.miguel.project.program.repositories.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.miguel.project.program.entities.Product;
+import com.miguel.project.program.entities.dto.ProductDTO;
+import com.miguel.project.program.exceptions.EntityNotFoundException;
+import com.miguel.project.program.repositories.ProductRepository;
 
 @Service
 public class ProductService {
@@ -40,5 +41,35 @@ public class ProductService {
         productRepository.save(product);
 
         return productDTO;
+    }
+
+    private void updateData(Product destiny, ProductDTO source) {
+
+        destiny.setName(source.getName());
+        destiny.setPrice(source.getPrice());
+        destiny.setDescription(source.getDescription());
+    }
+
+    public Product update(Long id, ProductDTO productDTO) {
+
+        var product = productRepository.getReferenceById(id);
+
+        if(product == null)
+            throw new EntityNotFoundException("Product with id " + id + " not found!");
+
+        else
+            updateData(product, productDTO);
+
+        return productRepository.save(product);
+
+    }
+
+    public void delete(Long id) {
+
+        if (!productRepository.existsById(id))
+            throw new EntityNotFoundException("category with id " + id + " not found");
+
+        else
+            productRepository.deleteById(id);
     }
 }
